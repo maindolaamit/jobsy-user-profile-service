@@ -1,0 +1,11 @@
+server:
+  servlet:
+    context-path: /api
+  port: 8081
+
+spring:
+  data:
+    mongodb:
+      database: jobsy-dev
+      port: 27017
+      host: localhost
