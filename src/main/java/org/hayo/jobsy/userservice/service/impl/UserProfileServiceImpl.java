@@ -5,7 +5,7 @@ import lombok.val;
 import org.hayo.jobsy.dto.response.BasicApiResponse;
 import org.hayo.jobsy.dto.users.CreateUserRequest;
 import org.hayo.jobsy.dto.users.UserProfile;
-import org.hayo.jobsy.enums.Status;
+import org.hayo.jobsy.enums.user.UserStatus;
 import org.hayo.jobsy.userservice.models.exception.UserEmailAlreadyExistsException;
 import org.hayo.jobsy.userservice.models.exception.UserEmailNotExistsException;
 import org.hayo.jobsy.userservice.models.exception.UserNotExistsException;
@@ -59,7 +59,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         val entity = userProfileRepository.findById(id)
                 .orElseThrow(() -> new UserNotExistsException(id));
 
-        entity.setStatus(Status.DELETED);
+        entity.setUserStatus(UserStatus.SUSPENDED);
         userProfileRepository.save(entity);
     }
 

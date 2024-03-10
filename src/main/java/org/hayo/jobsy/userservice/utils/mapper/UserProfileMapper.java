@@ -2,8 +2,8 @@ package org.hayo.jobsy.userservice.utils.mapper;
 
 import org.hayo.jobsy.dto.users.CreateUserRequest;
 import org.hayo.jobsy.dto.users.UserProfile;
-import org.hayo.jobsy.enums.Status;
-import org.hayo.jobsy.enums.YesNo;
+import org.hayo.jobsy.enums.commons.YesNo;
+import org.hayo.jobsy.enums.user.UserStatus;
 import org.hayo.jobsy.userservice.models.entity.UserProfileEntity;
 
 public class UserProfileMapper {
@@ -50,7 +50,7 @@ public class UserProfileMapper {
         return UserProfileEntity.builder()
                 .name(request.getName())
                 .email(request.getEmail())
-                .status(Status.ACTIVE)
+                .userStatus(UserStatus.ACTIVE)
                 .openToWork(YesNo.YES)
                 .googleUrl(request.getGoogleUrl())
                 .githubUrl(request.getGithubUrl())
