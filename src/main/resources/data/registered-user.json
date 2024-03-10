@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Sumit Massey",
+    "email": "user1@gmail.com",
+    "password": "password1"
+  },
+  {
+    "name": "Ashish Kumar",
+    "email": "ashish@gmail.com",
+    "password": "password2"
+  },
+  {
+    "name": "Saurabh Kumar",
+    "email": "saurabh.kumar@gmail.com",
+    "password": "password3"
+  },
+  {
+    "name": "Pinky Kumari",
+    "email": "pinky_kumari@gmail.com",
+    "password": "password4"
+  },
+  {
+    "name": "User 5",
+    "email": "user5@gmail.com",
+    "password": "password5"
+  },
+  {
+    "name": "Alice Johnson",
+    "email": "alice.johnson@example.com",
+    "password": "passwordAliceJohnson"
+  },
+  {
+    "name": "Bob Wilson",
+    "email": "bob.wilson@example.com",
+    "password": "passwordBobWilson"
+  },
+  {
+    "name": "Charlie Brown",
+    "email": "charlie.brown@example.com",
+    "password": "passwordCharlieBrown"
+  },
+  {
+    "name": "David Smith",
+    "email": "david.smith@example.com",
+    "password": "passwordDavidSmith"
+  },
+  {
+    "name": "Emma Taylor",
+    "email": "emma.taylor@example.com",
+    "password": "passwordEmmaTaylor"
+  }
+]
