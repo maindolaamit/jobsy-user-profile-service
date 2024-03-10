@@ -13,7 +13,6 @@ import org.hayo.jobsy.models.exceptions.EmailNotRegisteredException;
 import org.hayo.jobsy.models.exceptions.VerificationCodeExpiredException;
 import org.hayo.jobsy.models.exceptions.VerificationCodeInvalidException;
 import org.hayo.jobsy.userservice.models.entity.RegisteredUserEntity;
-import org.hayo.jobsy.userservice.repository.CompanyRegistrationRepository;
 import org.hayo.jobsy.userservice.repository.UserRegistrationRepository;
 import org.hayo.jobsy.userservice.service.RegistrationService;
 import org.hayo.jobsy.userservice.service.UserProfileService;
@@ -31,7 +30,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RegistrationServiceImpl implements RegistrationService {
     private final UserRegistrationRepository repository;
-    private final CompanyRegistrationRepository companyRepository;
     private final UserProfileService userProfileService;
 
     @Override
@@ -57,7 +55,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public UserProfile verifyUser(VerifyRegisteredUserRequest request) {
-        val entity = getVerifyTokenUserEntity(request.getEmail(), request.getToken());
+        val entity = getVerifiedUserEntity(request.getEmail(), request.getToken());
         log.debug("User {} verified", entity.getEmail());
         val req = UserRegistrationMapper.createUserRequestFromEntity(entity);
         return userProfileService.createUserProfile(req);
@@ -68,7 +66,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
 
-    public RegisteredUserEntity getVerifyTokenUserEntity(String email, String verificationCode) {
+    public RegisteredUserEntity getVerifiedUserEntity(String email, String verificationCode) {
         val byEmail = repository.findByEmail(email);
         // check if not null
         if (byEmail == null) {
