@@ -24,11 +24,11 @@ import java.util.List;
 @RestController
 @RequestMapping("v1/register")
 @Tag(name = "Register", description = "Registration Module")
-public class RegistrationController {
+public class CompnyRegistrationController {
 
     private final RegistrationService registrationService;
 
-    public RegistrationController(RegistrationService registrationService) {
+    public CompnyRegistrationController(RegistrationService registrationService) {
         this.registrationService = registrationService;
     }
 

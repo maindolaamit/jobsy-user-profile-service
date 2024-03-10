@@ -17,4 +17,5 @@ public interface RegistrationService {
     UserProfile verifyUser(VerifyRegisteredUserRequest request);
 
     List<RegisteredUser> getAllUsers(LocalDate since);
+
 }

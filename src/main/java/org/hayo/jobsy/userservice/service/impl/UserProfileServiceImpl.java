@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.hayo.jobsy.dto.response.BasicApiResponse;
 import org.hayo.jobsy.dto.users.CreateUserRequest;
+import org.hayo.jobsy.dto.users.Experience;
 import org.hayo.jobsy.dto.users.UserProfile;
 import org.hayo.jobsy.enums.user.UserStatus;
 import org.hayo.jobsy.userservice.models.exception.UserEmailAlreadyExistsException;
@@ -73,9 +74,38 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public UserProfile getUserProfileById(String id) {
-        userProfileRepository.findById(id)
-                .ifPresent(UserProfileMapper::toDto);
+        val entity = userProfileRepository.findById(id).orElseThrow(() -> new UserNotExistsException(id));
+        return UserProfileMapper.toDto(entity);
+    }
 
-        throw new UserNotExistsException(id);
+    @Override
+    public UserProfile addUserExperience(String userId, Experience request) {
+        var entity = userProfileRepository.findById(userId).orElseThrow(() -> new UserNotExistsException(userId));
+
+        entity.getExperiences().add(request);
+        entity = userProfileRepository.save(entity);
+        return UserProfileMapper.toDto(entity);
+    }
+
+    @Override
+    public UserProfile addUserSkills(String userId, List<String> skills) {
+        if(skills == null || skills.isEmpty()) throw new IllegalArgumentException("Skills cannot be null");
+
+        var entity = userProfileRepository.findById(userId).orElseThrow(() -> new UserNotExistsException(userId));
+        // add new skills to existing skills
+        if (entity.getSkills() != null) skills.addAll(entity.getSkills());
+        skills = skills.stream().filter(s -> !s.isBlank()).toList();
+
+        entity.setSkills(skills);
+        entity = userProfileRepository.save(entity);
+        return UserProfileMapper.toDto(entity);
+    }
+
+    @Override
+    public UserProfile updateUserSkills(String userId, List<String> request) {
+        var entity = userProfileRepository.findById(userId).orElseThrow(() -> new UserNotExistsException(userId));
+        entity.setSkills(request);
+        entity = userProfileRepository.save(entity);
+        return UserProfileMapper.toDto(entity);
     }
 }

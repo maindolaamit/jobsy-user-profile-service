@@ -8,11 +8,12 @@ import org.hayo.jobsy.dto.registration.RegisteredUser;
 import org.hayo.jobsy.dto.registration.RegisteredUserResponse;
 import org.hayo.jobsy.dto.registration.VerifyRegisteredUserRequest;
 import org.hayo.jobsy.dto.users.UserProfile;
+import org.hayo.jobsy.models.exceptions.EmailAlreadyExistsException;
+import org.hayo.jobsy.models.exceptions.EmailNotRegisteredException;
+import org.hayo.jobsy.models.exceptions.VerificationCodeExpiredException;
+import org.hayo.jobsy.models.exceptions.VerificationCodeInvalidException;
 import org.hayo.jobsy.userservice.models.entity.RegisteredUserEntity;
-import org.hayo.jobsy.userservice.models.exception.EmailAlreadyRegisteredException;
-import org.hayo.jobsy.userservice.models.exception.ExpiredVerificationCodeException;
-import org.hayo.jobsy.userservice.models.exception.InvalidVerificationCodeException;
-import org.hayo.jobsy.userservice.models.exception.UserNotRegisteredException;
+import org.hayo.jobsy.userservice.repository.CompanyRegistrationRepository;
 import org.hayo.jobsy.userservice.repository.UserRegistrationRepository;
 import org.hayo.jobsy.userservice.service.RegistrationService;
 import org.hayo.jobsy.userservice.service.UserProfileService;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RegistrationServiceImpl implements RegistrationService {
     private final UserRegistrationRepository repository;
+    private final CompanyRegistrationRepository companyRepository;
     private final UserProfileService userProfileService;
 
     @Override
@@ -38,7 +40,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         if (byEmail != null) {
             log.error("User {} already registered id: {}", dto.getEmail(),
                     byEmail.getId());
-            throw new EmailAlreadyRegisteredException(dto.getEmail());
+            throw new EmailAlreadyExistsException(dto.getEmail());
         }
 
         try {
@@ -70,16 +72,16 @@ public class RegistrationServiceImpl implements RegistrationService {
         val byEmail = repository.findByEmail(email);
         // check if not null
         if (byEmail == null) {
-            throw new UserNotRegisteredException(email);
+            throw new EmailNotRegisteredException(email);
         } else {
             // check if the verification code is valid and not expired
             if (!byEmail.getVerificationCode().equals(verificationCode)) {
                 log.error("Invalid verification code for user {}", email);
-                throw new InvalidVerificationCodeException();
+                throw new VerificationCodeInvalidException();
             }
             if (!byEmail.getVerificationExpiry().isAfter(LocalDateTime.now())) {
                 log.error("Verification code expired for user {}", email);
-                throw new ExpiredVerificationCodeException();
+                throw new VerificationCodeExpiredException();
             }
             return byEmail;
         }

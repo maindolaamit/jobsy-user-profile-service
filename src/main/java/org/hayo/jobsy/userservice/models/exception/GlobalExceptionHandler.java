@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.hayo.jobsy.dto.response.ApiErrorCauses;
 import org.hayo.jobsy.dto.response.ApiErrorSchema;
+import org.hayo.jobsy.models.exceptions.AbstractWebExceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,7 +32,7 @@ public class GlobalExceptionHandler {
                 .causes(causes).build();
     }
 
-//    @ExceptionHandler(InvalidEmailException.class)
+    //    @ExceptionHandler(InvalidEmailException.class)
 //    public ResponseEntity<ApiErrorSchema> handleUserNotRegistered(InvalidEmailException e) {
 //        ApiErrorSchema schema = getApiErrorSchema(e);
 //
@@ -47,13 +48,13 @@ public class GlobalExceptionHandler {
 //        return new ResponseEntity<>(schema, HttpStatus.NOT_FOUND);
 //    }
 //
-@ExceptionHandler(AbstractWebExceptions.class)
-public ResponseEntity<ApiErrorSchema> handleUserNotRegistered(AbstractWebExceptions e) {
-    ApiErrorSchema schema = getApiErrorSchema(e);
+    @ExceptionHandler(AbstractWebExceptions.class)
+    public ResponseEntity<ApiErrorSchema> handleUserNotRegistered(AbstractWebExceptions e) {
+        ApiErrorSchema schema = getApiErrorSchema(e);
 
-    log.error(e.getMessage());
-    return new ResponseEntity<>(schema, HttpStatus.NOT_FOUND);
-}
+        log.error(e.getMessage());
+        return new ResponseEntity<>(schema, HttpStatus.NOT_FOUND);
+    }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiErrorSchema> handleUserNotRegistered(IllegalArgumentException e) {
@@ -63,8 +64,8 @@ public ResponseEntity<ApiErrorSchema> handleUserNotRegistered(AbstractWebExcepti
                 .location("BODY")
                 .build();
 
-        ApiErrorSchema schema = new ApiErrorSchema(HttpStatus.INTERNAL_SERVER_ERROR.toString(),
-                "An error occurred",
+        ApiErrorSchema schema = new ApiErrorSchema(HttpStatus.BAD_REQUEST.toString(),
+                e.getMessage(),
                 Collections.singletonList(causes));
         log.error("An error occurred {}", e.getMessage());
 

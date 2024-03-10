@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.hayo.jobsy.dto.Address;
 import org.hayo.jobsy.dto.users.Education;
 import org.hayo.jobsy.dto.users.Experience;
 import org.hayo.jobsy.dto.users.Salary;
@@ -37,7 +36,8 @@ public class UserProfileEntity extends AbstractEntity {
     private String githubUrl;
     private Salary salary;
     private LocalDateTime lastLogin;
-    private Address address;
+    //    private Address address;
+    private String location;
     private String currentPosition;
     private List<String> skills;
     private List<Education> educations;
