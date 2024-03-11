@@ -1,5 +1,6 @@
 package org.hayo.jobsy.userservice.models.exception;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.hayo.jobsy.dto.response.ApiErrorCauses;
@@ -16,38 +17,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.hayo.jobsy.models.exceptions.ExceptionUtility.getApiErrorSchema;
+
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static ApiErrorSchema getApiErrorSchema(AbstractWebExceptions e) {
-        String type = Object.class.getSimpleName();
-        List<ApiErrorCauses> causes = List.of(
-                ApiErrorCauses.builder().type(type)
-                        .detail(e.getMessage()).build()
-        );
-        return ApiErrorSchema.builder()
-                .type(e.getStatus().toString())
-                .detail(e.getReason())
-                .causes(causes).build();
-    }
-
-    //    @ExceptionHandler(InvalidEmailException.class)
-//    public ResponseEntity<ApiErrorSchema> handleUserNotRegistered(InvalidEmailException e) {
-//        ApiErrorSchema schema = getApiErrorSchema(e);
-//
-//        log.error(e.getMessage());
-//        return new ResponseEntity<>(schema, HttpStatus.NOT_FOUND);
-//    }
-//
-//    @ExceptionHandler(InvalidVerificationCodeException.class)
-//    public ResponseEntity<ApiErrorSchema> handleUserNotRegistered(InvalidVerificationCodeException e) {
-//        ApiErrorSchema schema = getApiErrorSchema(e);
-//
-//        log.error(e.getMessage());
-//        return new ResponseEntity<>(schema, HttpStatus.NOT_FOUND);
-//    }
-//
     @ExceptionHandler(AbstractWebExceptions.class)
     public ResponseEntity<ApiErrorSchema> handleUserNotRegistered(AbstractWebExceptions e) {
         ApiErrorSchema schema = getApiErrorSchema(e);
